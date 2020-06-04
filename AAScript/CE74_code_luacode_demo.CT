@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="42">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>1</ID>
+      <Description>"汇编"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>define(address,"Tutorial-x86_64.exe"+2B4BC)
+define(bytes,29 83 F8 07 00 00)
+
+[ENABLE]
+
+assert(address,bytes)
+alloc(newmem,$1000,"Tutorial-x86_64.exe"+2B4BC)
+
+label(code)
+label(return reset)
+
+newmem:
+  mov eax, [rbx+000007F8]
+
+  cmp eax,#90
+  jl reset
+  sub eax, 1
+  jmp code
+
+reset:
+  mov eax,#100
+
+code:
+  mov [rbx+000007F8],eax
+  jmp return
+
+address:
+  jmp newmem
+  nop
+return:
+
+[DISABLE]
+
+address:
+  db bytes
+  // sub [rbx+000007F8],eax
+
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: Tutorial-x86_64.exe+2B4BC
+
+Tutorial-x86_64.exe+2B490: 55                       - push rbp
+Tutorial-x86_64.exe+2B491: 48 89 E5                 - mov rbp,rsp
+Tutorial-x86_64.exe+2B494: 48 8D A4 24 D0 FE FF FF  - lea rsp,[rsp-00000130]
+Tutorial-x86_64.exe+2B49C: 48 89 9D F0 FE FF FF     - mov [rbp-00000110],rbx
+Tutorial-x86_64.exe+2B4A3: 48 89 CB                 - mov rbx,rcx
+Tutorial-x86_64.exe+2B4A6: 48 C7 45 F8 00 00 00 00  - mov qword ptr [rbp-08],00000000
+Tutorial-x86_64.exe+2B4AE: 90                       - nop 
+Tutorial-x86_64.exe+2B4AF: B9 05 00 00 00           - mov ecx,00000005
+Tutorial-x86_64.exe+2B4B4: E8 57 47 FE FF           - call Tutorial-x86_64.exe+FC10
+Tutorial-x86_64.exe+2B4B9: 83 C0 01                 - add eax,01
+// ---------- INJECTING HERE ----------
+Tutorial-x86_64.exe+2B4BC: 29 83 F8 07 00 00        - sub [rbx+000007F8],eax
+// ---------- DONE INJECTING  ----------
+Tutorial-x86_64.exe+2B4C2: 48 8D 4D F8              - lea rcx,[rbp-08]
+Tutorial-x86_64.exe+2B4C6: E8 45 DA FD FF           - call Tutorial-x86_64.exe+8F10
+Tutorial-x86_64.exe+2B4CB: 8B 8B F8 07 00 00        - mov ecx,[rbx+000007F8]
+Tutorial-x86_64.exe+2B4D1: 41 B9 FF 00 00 00        - mov r9d,000000FF
+Tutorial-x86_64.exe+2B4D7: 4C 8D 85 F8 FE FF FF     - lea r8,[rbp-00000108]
+Tutorial-x86_64.exe+2B4DE: 48 C7 C2 FF FF FF FF     - mov rdx,FFFFFFFFFFFFFFFF
+Tutorial-x86_64.exe+2B4E5: 48 63 C9                 - movsxd  rcx,ecx
+Tutorial-x86_64.exe+2B4E8: E8 A3 AB FD FF           - call Tutorial-x86_64.exe+6090
+Tutorial-x86_64.exe+2B4ED: 45 31 C0                 - xor r8d,r8d
+Tutorial-x86_64.exe+2B4F0: 48 8D 95 F8 FE FF FF     - lea rdx,[rbp-00000108]
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>2</ID>
+      <Description>"c code"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>define(address,"Tutorial-x86_64.exe"+2B4BC)
+define(bytes,29 83 F8 07 00 00)
+
+[ENABLE]
+
+assert(address,bytes)
+alloc(newmem,$1000,"Tutorial-x86_64.exe"+2B4BC)
+
+label(code)
+label(return)
+
+// 定义一次的c函数
+{$c}
+int valuehelper(int x)
+{
+  if(x &lt; 90)
+   return 100;
+  else return x -1;
+}
+{$asm}
+
+newmem:
+  mov eax, [rbx+000007F8]
+
+// 嵌入c代码
+{$ccode value=eax value2=ebx}
+value=valuehelper(value);
+{$asm}
+
+code:
+  mov [rbx+000007F8],eax
+  jmp return
+
+address:
+  jmp newmem
+  nop
+return:
+
+[DISABLE]
+
+address:
+  db bytes
+  // sub [rbx+000007F8],eax
+
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: Tutorial-x86_64.exe+2B4BC
+
+Tutorial-x86_64.exe+2B490: 55                       - push rbp
+Tutorial-x86_64.exe+2B491: 48 89 E5                 - mov rbp,rsp
+Tutorial-x86_64.exe+2B494: 48 8D A4 24 D0 FE FF FF  - lea rsp,[rsp-00000130]
+Tutorial-x86_64.exe+2B49C: 48 89 9D F0 FE FF FF     - mov [rbp-00000110],rbx
+Tutorial-x86_64.exe+2B4A3: 48 89 CB                 - mov rbx,rcx
+Tutorial-x86_64.exe+2B4A6: 48 C7 45 F8 00 00 00 00  - mov qword ptr [rbp-08],00000000
+Tutorial-x86_64.exe+2B4AE: 90                       - nop 
+Tutorial-x86_64.exe+2B4AF: B9 05 00 00 00           - mov ecx,00000005
+Tutorial-x86_64.exe+2B4B4: E8 57 47 FE FF           - call Tutorial-x86_64.exe+FC10
+Tutorial-x86_64.exe+2B4B9: 83 C0 01                 - add eax,01
+// ---------- INJECTING HERE ----------
+Tutorial-x86_64.exe+2B4BC: 29 83 F8 07 00 00        - sub [rbx+000007F8],eax
+// ---------- DONE INJECTING  ----------
+Tutorial-x86_64.exe+2B4C2: 48 8D 4D F8              - lea rcx,[rbp-08]
+Tutorial-x86_64.exe+2B4C6: E8 45 DA FD FF           - call Tutorial-x86_64.exe+8F10
+Tutorial-x86_64.exe+2B4CB: 8B 8B F8 07 00 00        - mov ecx,[rbx+000007F8]
+Tutorial-x86_64.exe+2B4D1: 41 B9 FF 00 00 00        - mov r9d,000000FF
+Tutorial-x86_64.exe+2B4D7: 4C 8D 85 F8 FE FF FF     - lea r8,[rbp-00000108]
+Tutorial-x86_64.exe+2B4DE: 48 C7 C2 FF FF FF FF     - mov rdx,FFFFFFFFFFFFFFFF
+Tutorial-x86_64.exe+2B4E5: 48 63 C9                 - movsxd  rcx,ecx
+Tutorial-x86_64.exe+2B4E8: E8 A3 AB FD FF           - call Tutorial-x86_64.exe+6090
+Tutorial-x86_64.exe+2B4ED: 45 31 C0                 - xor r8d,r8d
+Tutorial-x86_64.exe+2B4F0: 48 8D 95 F8 FE FF FF     - lea rdx,[rbp-00000108]
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>3</ID>
+      <Description>"lua code"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>define(address,"Tutorial-x86_64.exe"+2B4BC)
+define(bytes,29 83 F8 07 00 00)
+
+[ENABLE]
+
+assert(address,bytes)
+alloc(newmem,$1000,"Tutorial-x86_64.exe"+2B4BC)
+
+label(code)
+label(return)
+
+// 定义一次的lua函数
+{$lua}
+if syntaxcheck then return end
+
+function valuehelper(x)
+  if x &lt; 90 then
+    return 100
+  else
+    return x - 1
+  end
+end
+{$asm}
+
+newmem:
+  mov eax, [rbx+000007F8]
+
+// 嵌入lua代码
+{$luacode value=eax}
+value=valuehelper(value)
+{$asm}
+
+code:
+  mov [rbx+000007F8],eax
+  jmp return
+
+address:
+  jmp newmem
+  nop
+return:
+
+[DISABLE]
+
+address:
+  db bytes
+  // sub [rbx+000007F8],eax
+
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: Tutorial-x86_64.exe+2B4BC
+
+Tutorial-x86_64.exe+2B490: 55                       - push rbp
+Tutorial-x86_64.exe+2B491: 48 89 E5                 - mov rbp,rsp
+Tutorial-x86_64.exe+2B494: 48 8D A4 24 D0 FE FF FF  - lea rsp,[rsp-00000130]
+Tutorial-x86_64.exe+2B49C: 48 89 9D F0 FE FF FF     - mov [rbp-00000110],rbx
+Tutorial-x86_64.exe+2B4A3: 48 89 CB                 - mov rbx,rcx
+Tutorial-x86_64.exe+2B4A6: 48 C7 45 F8 00 00 00 00  - mov qword ptr [rbp-08],00000000
+Tutorial-x86_64.exe+2B4AE: 90                       - nop 
+Tutorial-x86_64.exe+2B4AF: B9 05 00 00 00           - mov ecx,00000005
+Tutorial-x86_64.exe+2B4B4: E8 57 47 FE FF           - call Tutorial-x86_64.exe+FC10
+Tutorial-x86_64.exe+2B4B9: 83 C0 01                 - add eax,01
+// ---------- INJECTING HERE ----------
+Tutorial-x86_64.exe+2B4BC: 29 83 F8 07 00 00        - sub [rbx+000007F8],eax
+// ---------- DONE INJECTING  ----------
+Tutorial-x86_64.exe+2B4C2: 48 8D 4D F8              - lea rcx,[rbp-08]
+Tutorial-x86_64.exe+2B4C6: E8 45 DA FD FF           - call Tutorial-x86_64.exe+8F10
+Tutorial-x86_64.exe+2B4CB: 8B 8B F8 07 00 00        - mov ecx,[rbx+000007F8]
+Tutorial-x86_64.exe+2B4D1: 41 B9 FF 00 00 00        - mov r9d,000000FF
+Tutorial-x86_64.exe+2B4D7: 4C 8D 85 F8 FE FF FF     - lea r8,[rbp-00000108]
+Tutorial-x86_64.exe+2B4DE: 48 C7 C2 FF FF FF FF     - mov rdx,FFFFFFFFFFFFFFFF
+Tutorial-x86_64.exe+2B4E5: 48 63 C9                 - movsxd  rcx,ecx
+Tutorial-x86_64.exe+2B4E8: E8 A3 AB FD FF           - call Tutorial-x86_64.exe+6090
+Tutorial-x86_64.exe+2B4ED: 45 31 C0                 - xor r8d,r8d
+Tutorial-x86_64.exe+2B4F0: 48 8D 95 F8 FE FF FF     - lea rdx,[rbp-00000108]
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>4</ID>
+      <Description>"跳过luacode"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>loadlibrary(luaclient-x86_64.dll)
+luacall(openLuaServer('CELUASERVER'))
+
+CELUA_ServerName:
+db 'CELUASERVER',0
+
+{
+//luacall call example:
+//Make sure rsp is aligned on a 16-byte boundary when calling this function
+mov rcx, addresstostringwithfunction //(The lua function will have access to the variable passed by name "parameter")
+mov rdx, integervariableyouwishtopasstolua
+sub rsp,20
+call CELUA_ExecuteFunction // or CELUA_ExecuteFunctionAsync if you don't need GUI access or want to handle it yourself
+add rsp,20
+
+//------
+//Alternate call by ref example:
+
+mov ecx,[addresswithluafunctionidstored]
+test ecx,ecx
+jne short hasrefid
+
+mov rcx,addresswithluafunctionname
+call CELUA_GetFunctionReferenceFromName  //Basically calls createRef(functionname) and returns the value
+mov [addresswithluafunctionidstored],eax
+mov ecx,eax
+
+hasrefid:
+mov edx,numberofparameterstopass
+mov r8,addresswithparameterlist  //could be the stack.  e.g lea r8,[rsp+8]
+mov [r8],param1
+mov [r8+8],param2
+mov [r8+c],param3
+//...
+mov r9,0 //0=no async, 1=async.  Use async if you do not wish to update the GUI. Faster
+call CELUA_ExecuteFunctionByReference
+
+When done RAX will contain the result of the lua function
+And as per 64-bit calling convention, RCX, RDX, R8, R9, R10, R11 may have been altered. So save/restore them beforehand
+}
+define(address,"Tutorial-x86_64.exe"+2B4BC)
+define(bytes,29 83 F8 07 00 00)
+
+[ENABLE]
+
+assert(address,bytes)
+alloc(newmem,$1000,"Tutorial-x86_64.exe"+2B4BC)
+
+label(code)
+label(return enable_luacode)
+
+// 定义一次的lua函数
+{$lua}
+if syntaxcheck then return end
+
+function valuehelper(x)
+  if x &lt; 90 then
+    return 100
+  else
+    return x - 1
+  end
+end
+{$asm}
+
+newmem:
+  mov eax, [rbx+000007F8]
+
+  pushf
+  cmp [enable_luacode],1
+  jne code
+// 嵌入lua代码
+{$luacode value=eax}
+value=valuehelper(value)
+{$asm}
+
+code:
+  popf
+  mov [rbx+000007F8],eax
+  jmp return
+  enable_luacode:
+    dd 0
+
+address:
+  jmp newmem
+  nop
+return:
+
+registersymbol(enable_luacode)
+[DISABLE]
+
+address:
+  db bytes
+  // sub [rbx+000007F8],eax
+
+unregistersymbol(*)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: Tutorial-x86_64.exe+2B4BC
+
+Tutorial-x86_64.exe+2B490: 55                       - push rbp
+Tutorial-x86_64.exe+2B491: 48 89 E5                 - mov rbp,rsp
+Tutorial-x86_64.exe+2B494: 48 8D A4 24 D0 FE FF FF  - lea rsp,[rsp-00000130]
+Tutorial-x86_64.exe+2B49C: 48 89 9D F0 FE FF FF     - mov [rbp-00000110],rbx
+Tutorial-x86_64.exe+2B4A3: 48 89 CB                 - mov rbx,rcx
+Tutorial-x86_64.exe+2B4A6: 48 C7 45 F8 00 00 00 00  - mov qword ptr [rbp-08],00000000
+Tutorial-x86_64.exe+2B4AE: 90                       - nop 
+Tutorial-x86_64.exe+2B4AF: B9 05 00 00 00           - mov ecx,00000005
+Tutorial-x86_64.exe+2B4B4: E8 57 47 FE FF           - call Tutorial-x86_64.exe+FC10
+Tutorial-x86_64.exe+2B4B9: 83 C0 01                 - add eax,01
+// ---------- INJECTING HERE ----------
+Tutorial-x86_64.exe+2B4BC: 29 83 F8 07 00 00        - sub [rbx+000007F8],eax
+// ---------- DONE INJECTING  ----------
+Tutorial-x86_64.exe+2B4C2: 48 8D 4D F8              - lea rcx,[rbp-08]
+Tutorial-x86_64.exe+2B4C6: E8 45 DA FD FF           - call Tutorial-x86_64.exe+8F10
+Tutorial-x86_64.exe+2B4CB: 8B 8B F8 07 00 00        - mov ecx,[rbx+000007F8]
+Tutorial-x86_64.exe+2B4D1: 41 B9 FF 00 00 00        - mov r9d,000000FF
+Tutorial-x86_64.exe+2B4D7: 4C 8D 85 F8 FE FF FF     - lea r8,[rbp-00000108]
+Tutorial-x86_64.exe+2B4DE: 48 C7 C2 FF FF FF FF     - mov rdx,FFFFFFFFFFFFFFFF
+Tutorial-x86_64.exe+2B4E5: 48 63 C9                 - movsxd  rcx,ecx
+Tutorial-x86_64.exe+2B4E8: E8 A3 AB FD FF           - call Tutorial-x86_64.exe+6090
+Tutorial-x86_64.exe+2B4ED: 45 31 C0                 - xor r8d,r8d
+Tutorial-x86_64.exe+2B4F0: 48 8D 95 F8 FE FF FF     - lea rdx,[rbp-00000108]
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>6</ID>
+      <Description>"ccode 处理 float"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>define(address,"Tutorial-x86_64.exe"+2C824)
+define(bytes,F3 0F 11 8E 18 08 00 00)
+
+[ENABLE]
+assert(address,bytes)
+alloc(newmem,$1000,"Tutorial-x86_64.exe"+2C824)
+
+label(code)
+label(return)
+
+newmem:
+
+// xmm1.0F: xmm1寄存器第0个float
+//{$ccode fvalue=xmm-1.0F}
+//fvalue = 30.0F;
+//{$asm}
+
+// 或者取整个xmm1寄存器
+{$ccode fvalue=xmm1}
+fvalue.f0 = 50.0F;
+{$asm}
+
+code:
+  movss [rsi+00000818],xmm1
+  jmp return
+
+address:
+  jmp newmem
+  nop 3
+return:
+
+[DISABLE]
+address:
+  db bytes
+
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: Tutorial-x86_64.exe+2C824
+
+Tutorial-x86_64.exe+2C7F2: F2 0F 2A C3              - cvtsi2sd xmm0,ebx
+Tutorial-x86_64.exe+2C7F6: F2 0F 5E F0              - divsd xmm6,xmm0
+Tutorial-x86_64.exe+2C7FA: F2 0F 58 35 D6 0D 20 00  - addsd xmm6,[Tutorial-x86_64.exe+22D5D8]
+Tutorial-x86_64.exe+2C802: B9 04 00 00 00           - mov ecx,00000004
+Tutorial-x86_64.exe+2C807: E8 04 34 FE FF           - call Tutorial-x86_64.exe+FC10
+Tutorial-x86_64.exe+2C80C: F2 0F 2A C0              - cvtsi2sd xmm0,eax
+Tutorial-x86_64.exe+2C810: F2 0F 58 F0              - addsd xmm6,xmm0
+Tutorial-x86_64.exe+2C814: F2 0F 5A C6              - cvtsd2ss xmm0,xmm6
+Tutorial-x86_64.exe+2C818: F3 0F 10 8E 18 08 00 00  - movss xmm1,[rsi+00000818]
+Tutorial-x86_64.exe+2C820: F3 0F 5C C8              - subss xmm1,xmm0
+// ---------- INJECTING HERE ----------
+Tutorial-x86_64.exe+2C824: F3 0F 11 8E 18 08 00 00  - movss [rsi+00000818],xmm1
+// ---------- DONE INJECTING  ----------
+Tutorial-x86_64.exe+2C82C: C7 44 24 20 04 00 00 00  - mov [rsp+20],00000004
+Tutorial-x86_64.exe+2C834: F3 0F 10 8E 18 08 00 00  - movss xmm1,[rsi+00000818]
+Tutorial-x86_64.exe+2C83C: 41 B9 04 00 00 00        - mov r9d,00000004
+Tutorial-x86_64.exe+2C842: 45 31 C0                 - xor r8d,r8d
+Tutorial-x86_64.exe+2C845: 48 8D 4D F8              - lea rcx,[rbp-08]
+Tutorial-x86_64.exe+2C849: E8 E2 E8 01 00           - call Tutorial-x86_64.exe+4B130
+Tutorial-x86_64.exe+2C84E: 48 8B 55 F8              - mov rdx,[rbp-08]
+Tutorial-x86_64.exe+2C852: 48 8B 8E F0 07 00 00     - mov rcx,[rsi+000007F0]
+Tutorial-x86_64.exe+2C859: E8 02 02 08 00           - call Tutorial-x86_64.exe+ACA60
+Tutorial-x86_64.exe+2C85E: F3 0F 10 86 18 08 00 00  - movss xmm0,[rsi+00000818]
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>8</ID>
+      <Description>"ccode 处理 double"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>define(address,"Tutorial-x86_64.exe"+2C60C)
+define(bytes,F2 0F 11 83 20 08 00 00)
+
+[ENABLE]
+assert(address,bytes)
+alloc(newmem,$1000,"Tutorial-x86_64.exe"+2C60C)
+
+label(code)
+label(return)
+
+newmem:
+
+//xmm0.0D : 获取xmm0寄存器第0个double
+//{$ccode dvalue=xmm0.0D}
+//dvalue = 50.0;
+//{$asm}
+
+{$ccode dvalue=xmm0}
+dvalue.d0 = 20.0;
+{$asm}
+
+code:
+  movsd [rbx+00000820],xmm0
+  jmp return
+
+address:
+  jmp newmem
+  nop 3
+return:
+
+[DISABLE]
+address:
+  db bytes
+  // movsd [rbx+00000820],xmm0
+
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: Tutorial-x86_64.exe+2C60C
+
+Tutorial-x86_64.exe+2C5E0: 90                       - nop 
+Tutorial-x86_64.exe+2C5E1: B9 0A 00 00 00           - mov ecx,0000000A
+Tutorial-x86_64.exe+2C5E6: E8 25 36 FE FF           - call Tutorial-x86_64.exe+FC10
+Tutorial-x86_64.exe+2C5EB: 83 C0 01                 - add eax,01
+Tutorial-x86_64.exe+2C5EE: 75 08                    - jne Tutorial-x86_64.exe+2C5F8
+Tutorial-x86_64.exe+2C5F0: B8 01 00 00 00           - mov eax,00000001
+Tutorial-x86_64.exe+2C5F5: 0F 1F 00                 - nop dword ptr [rax]
+Tutorial-x86_64.exe+2C5F8: F2 0F 10 0D 98 0F 20 00  - movsd xmm1,[Tutorial-x86_64.exe+22D598]
+Tutorial-x86_64.exe+2C600: F2 0F 10 83 20 08 00 00  - movsd xmm0,[rbx+00000820]
+Tutorial-x86_64.exe+2C608: F2 0F 5C C1              - subsd xmm0,xmm1
+// ---------- INJECTING HERE ----------
+Tutorial-x86_64.exe+2C60C: F2 0F 11 83 20 08 00 00  - movsd [rbx+00000820],xmm0
+// ---------- DONE INJECTING  ----------
+Tutorial-x86_64.exe+2C614: C7 44 24 20 04 00 00 00  - mov [rsp+20],00000004
+Tutorial-x86_64.exe+2C61C: F2 0F 10 8B 20 08 00 00  - movsd xmm1,[rbx+00000820]
+Tutorial-x86_64.exe+2C624: 41 B9 04 00 00 00        - mov r9d,00000004
+Tutorial-x86_64.exe+2C62A: 45 31 C0                 - xor r8d,r8d
+Tutorial-x86_64.exe+2C62D: 48 8D 4D F8              - lea rcx,[rbp-08]
+Tutorial-x86_64.exe+2C631: E8 6A EA 01 00           - call Tutorial-x86_64.exe+4B0A0
+Tutorial-x86_64.exe+2C636: 48 8B 55 F8              - mov rdx,[rbp-08]
+Tutorial-x86_64.exe+2C63A: 48 8B 8B D0 07 00 00     - mov rcx,[rbx+000007D0]
+Tutorial-x86_64.exe+2C641: E8 1A 04 08 00           - call Tutorial-x86_64.exe+ACA60
+Tutorial-x86_64.exe+2C646: 48 8B 0D 83 DE 18 00     - mov rcx,[Tutorial-x86_64.exe+1BA4D0]
+}
+</AssemblerScript>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>
