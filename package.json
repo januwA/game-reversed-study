@@ -1,0 +1,24 @@
+{
+  "name": "game-reversed-study",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "g": "node configScript.js",
+    "dev": "npm run g && vuepress dev ./",
+    "build": "npm run g && vuepress build ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/januwA/game-reversed-study.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/januwA/game-reversed-study/issues"
+  },
+  "homepage": "https://github.com/januwA/game-reversed-study#readme",
+  "devDependencies": {
+    "vuepress": "^1.8.2"
+  }
+}
